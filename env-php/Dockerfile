@@ -21,8 +21,8 @@ RUN apt-get -o Acquire::ForceIPv4=true update \
     && rm -rf /var/lib/apt/lists/*
 
 
-COPY app/ /var/www/html/
+COPY . /var/www/html/
 
-VOLUME ["/usr/local/phpconf"]
+VOLUME ["/var/www/html/config"]
 
 CMD [ "service", "apache2", "start" ]
