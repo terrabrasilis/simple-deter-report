@@ -27,3 +27,7 @@ table {
   padding-left: 25%;
   padding-right: 25%;
 }
+p, .res-txt{
+  display: flex;
+  justify-content: center;
+}
