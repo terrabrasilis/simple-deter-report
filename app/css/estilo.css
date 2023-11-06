@@ -1,0 +1,29 @@
+body {
+  background-color: white;
+  font-family: 'Raleway', sans-serif !important;
+  font-size: 16px;
+  font-weight: 400 !important;
+  color: #666 !important;
+}
+
+th, td {
+  padding: 5px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  font-size: 12px;
+}
+
+tr:hover {background-color:#ffffff;}
+
+table {
+  border-collapse: collapse;
+}
+
+.main-txt{
+  padding-left: 20%;
+  padding-right: 20%;
+}
+.res-txt{
+  padding-left: 25%;
+  padding-right: 25%;
+}
