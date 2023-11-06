@@ -23,6 +23,8 @@ RUN apt-get -o Acquire::ForceIPv4=true update \
 
 COPY . /var/www/html/
 
+RUN chown -R www-data:www-data /var/www
+
 VOLUME ["/var/www/html/config"]
 
-CMD [ "service", "apache2", "start" ]
+CMD ["apachectl", "-D", "FOREGROUND"]
