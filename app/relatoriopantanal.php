@@ -41,6 +41,14 @@
 	$classe_cr2 = 'supressão com solo exposto';
 	$classe_dg1 = 'cicatriz de queimada';
 
+	// atualiza municipio/uf na tabela deter
+	$query = "UPDATE public.deter_current  as dt";
+	$query .= " SET municipio = mun.nome, uf = mun.uf";
+	$query .= " FROM public.municipalities_pantanal_biome as mun ";
+	$query .= " WHERE ST_INTERSECTS(dt.geom, mun.geom)";
+	$query .= " AND dt.uf is NULL";
+	$result = pg_query($bdcon, $query);
+
 	// sql para desmate CR no periodo
 	$query = "SELECT sum(area_km) as area, ";
 	$query .= " min(view_date) as mindate, max(view_date) as maxdate";
@@ -136,12 +144,13 @@
 		
 	echo "<br></table>";
 
-	echo "<p align=\"center\"><b><font> 15 municipios com maiores areas detectadas de Desmatamento entre $data1 e $data2</font><br>";
+	echo "<p align=\"center\"><b><font>Municípios com maiores areas detectadas de Desmatamento entre $data1 e $data2</font><br>";
 
 	// sql para desmate CR no periodo por municipo
 	$query = "select municipio as mun, uf as uf, sum(area_km) as area";
 	$query .= " from $deter_table ";
 	$query .= " WHERE class_name in ('$classe_cr1', '$classe_cr2')";
+	$query .= " AND view_date >= '$data1' AND view_date <= '$data2'";
 	$query .= " group by 1,2 order by area desc limit 15";
 	// echo "$query <br>";
 
