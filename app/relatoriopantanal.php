@@ -35,8 +35,6 @@
 
 	echo "$body";
 
-	$mesarray = array("0","Janeiro","Fevereiro","Marco","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro");
-
 	$classe_cr1 = 'supressão com vegetação';
 	$classe_cr2 = 'supressão com solo exposto';
 	$classe_dg1 = 'cicatriz de queimada';
@@ -144,7 +142,7 @@
 		
 	echo "<br></table>";
 
-	echo "<p align=\"center\"><b><font>Municípios com maiores areas detectadas de Desmatamento entre $data1 e $data2</font><br>";
+	echo "<p align=\"center\"><b><font>Municípios com maiores áreas detectadas de Desmatamento entre $data1 e $data2</font><br>";
 
 	// sql para desmate CR no periodo por municipo
 	$query = "select municipio as mun, uf as uf, sum(area_km) as area";
