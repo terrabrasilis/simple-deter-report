@@ -16,7 +16,7 @@
 	$connection_string = "host=$host port=$port dbname=$dbname user=$user password=$password";
 	$bdcon = @pg_connect($connection_string);
 
-	$stat = pg_connection_status($dbcon);
+	$stat = pg_connection_status($bdcon);
 	if ($stat <> 0) {
 		echo '<p align="center"><font size="6" face="Verdana"><b>Falha de comunicação com o banco de dados.</b></font><br><br>';
 		echo '<p align="center"><font size="3" face="Verdana">Não foi possível gerar o relatório. Tente mais tarde.</font>';
