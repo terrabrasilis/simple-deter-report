@@ -13,16 +13,13 @@ fi
 
 VERSION=$(git describe --tags --abbrev=0)
 
-echo "Do you want to build image of terrabrasilis/deter-pantanal-app? Type yes to confirm or anything else." ; read BUILD_IMG1
-if [[ "$BUILD_IMG1" = "yes" ]]; then
-    echo 
-    echo "/######################################################################/"
-    echo " Build new image terrabrasilis/deter-pantanal-app:$VERSION "
-    echo "/######################################################################/"
-    echo
+echo 
+echo "/######################################################################/"
+echo " Build new image terrabrasilis/deter-pantanal-app:$VERSION "
+echo "/######################################################################/"
+echo
 
-    docker build $NO_CACHE -t "terrabrasilis/deter-pantanal-app:$VERSION" -f env-php/Dockerfile app/
-fi
+docker build $NO_CACHE -t "terrabrasilis/deter-pantanal-app:$VERSION" -f env-php/Dockerfile app/
 
 # send to dockerhub
 echo 
