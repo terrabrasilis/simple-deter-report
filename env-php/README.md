@@ -1,7 +1,3 @@
-# DETER Pantanal App
-
-Publish a simple report for DETER Pantanal
-
 # Docker image
 
 To build the Docker image, use the "docker-build.sh" script. Atention with the tag version of the code repository because that version is used to tag the output image.
