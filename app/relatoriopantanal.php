@@ -7,8 +7,22 @@
 </head>
 
 <?php
-	require("config/config.inc.php");
+    error_reporting(E_ALL ^ E_NOTICE);
 	ini_set('display_erros', true);
+	require("config/config.inc.php");
+
+	$deter_table = "public.deter_auth";
+
+	$connection_string = "host=$host port=$port dbname=$dbname user=$user password=$password";
+	$bdcon = @pg_connect($connection_string);
+
+	$stat = pg_connection_status($dbcon);
+	if ($stat <> 0) {
+		echo '<p align="center"><font size="6" face="Verdana"><b>Falha de comunicação com o banco de dados.</b></font><br><br>';
+		echo '<p align="center"><font size="3" face="Verdana">Não foi possível gerar o relatório. Tente mais tarde.</font>';
+		echo '</body></html>';
+		exit;
+	}
 
 	$body = "
 	<p align=\"center\"><font size=\"6\" face=\"Verdana\"> <b>Resumo DETER Pantanal</B></font>
