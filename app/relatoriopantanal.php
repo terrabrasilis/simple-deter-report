@@ -1,10 +1,10 @@
 <html>
 <head>
-<meta charset="utf-8" />
-<body>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="css/estilo.css" type="text/css">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/estilo.css" type="text/css">
 </head>
+<body>
 
 <?php
     error_reporting(E_ALL ^ E_NOTICE);
@@ -16,8 +16,7 @@
 	$connection_string = "host=$host port=$port dbname=$dbname user=$user password=$password";
 	$bdcon = @pg_connect($connection_string);
 
-	$stat = pg_connection_status($bdcon);
-	if ($stat <> 0) {
+	if ($bdcon === false) {
 		echo '<p align="center"><font size="6" face="Verdana"><b>Falha de comunicação com o banco de dados.</b></font><br><br>';
 		echo '<p align="center"><font size="3" face="Verdana">Não foi possível gerar o relatório. Tente mais tarde.</font>';
 		echo '</body></html>';
@@ -59,7 +58,7 @@
 	$query .= " FROM public.municipalities_pantanal_biome as mun ";
 	$query .= " WHERE ST_INTERSECTS(dt.geom, mun.geom)";
 	$query .= " AND dt.uf is NULL";
-	$result = pg_query($bdcon, $query);
+	$result = @pg_query($bdcon, $query);
 
 	// sql para desmate CR no periodo
 	$query = "SELECT sum(area_km) as area, ";
@@ -68,9 +67,9 @@
 	$query .= " WHERE class_name in ('$classe_cr1', '$classe_cr2')";
 
 	//$submitted = 0;
-	$result = pg_query($bdcon, $query);
-	$numlinhas = pg_num_rows($result);
-	$row = pg_fetch_array($result);
+	$result = @pg_query($bdcon, $query);
+	$numlinhas = @pg_num_rows($result);
+	$row = @pg_fetch_array($result);
 	$area_cr = number_format($row["area"], 2, '.', '');
 	$mindate = $row["mindate"];
 	$maxdate = $row["maxdate"];
@@ -84,9 +83,9 @@
 	$query .= " WHERE class_name in ('$classe_dg1')";
 
 	//$submitted = 0;
-	$result = pg_query($bdcon, $query);
-	$numlinhas = pg_num_rows($result);
-	$row = pg_fetch_array($result);
+	$result = @pg_query($bdcon, $query);
+	$numlinhas = @pg_num_rows($result);
+	$row = @pg_fetch_array($result);
 	$area_deg = number_format($row["area"], 2, '.', '');
 	$mindate = $row["mindate"];
 	$maxdate = $row["maxdate"];
@@ -102,9 +101,9 @@
 	//echo "$query <br>";
 
 	//$submitted = 0;
-	$result = pg_query($bdcon, $query);
-	$numlinhas = pg_num_rows($result);
-	$row = pg_fetch_array($result);
+	$result = @pg_query($bdcon, $query);
+	$numlinhas = @pg_num_rows($result);
+	$row = @pg_fetch_array($result);
 	$area_cr = number_format($row["area"], 2, '.', '');
 	echo "Alertas de Desmatamento: $area_cr km² entre $data1 e $data2<br><br>";
 
@@ -114,9 +113,9 @@
 	$query .= " and class_name in ('$classe_dg1')";
 	//echo "$query <br>";
 
-	$result = pg_query($bdcon, $query);
-	$row = pg_fetch_array($result);
-	$numlinhas = pg_num_rows($result);
+	$result = @pg_query($bdcon, $query);
+	$row = @pg_fetch_array($result);
+	$numlinhas = @pg_num_rows($result);
 	$area_deg = number_format($row["area"], 2, '.', '');
 	echo "Alertas de Degradação: $area_deg km² entre $data1 e $data2<br><br>";
 
@@ -129,7 +128,7 @@
 	$query = 	"SELECT extract(year from view_date) as ano,extract(month from view_date) as mes,";
 	$query .= " class_name as classe, sum(area_km) as area FROM $deter_table";
 	$query .= " GROUP BY 1,2,3";
-	$result = pg_query($bdcon, $query);
+	$result = @pg_query($bdcon, $query);
 	//echo "$query <br>";
 
 	echo "<table align=\"center\">";
@@ -141,7 +140,7 @@
 	echo "</b></tr>";
 	echo "<tr>";
 
-	while ($row = pg_fetch_array($result))
+	while ($row = @pg_fetch_array($result))
 	{
 		$ano = $row["ano"];
 		$mes = $row["mes"];
@@ -176,11 +175,11 @@
 	echo "<tr>";
 
 	//$submitted = 0;
-	$result = pg_query($bdcon, $query);
-	$numlinhas = pg_num_rows($result);
+	$result = @pg_query($bdcon, $query);
+	$numlinhas = @pg_num_rows($result);
 	$conta = 1;
 
-	while ($row = pg_fetch_array($result))
+	while ($row = @pg_fetch_array($result))
 	{
 		$municipio = $row["mun"];
 		$uf = $row["uf"];
