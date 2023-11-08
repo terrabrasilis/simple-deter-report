@@ -28,7 +28,5 @@ if [[ ! "$SEND_TO_HUB" = "yes" ]]; then
     echo "Ok, not send the images."
 else
     echo "Nice, sending the images!"
-    if [[ "$BUILD_IMG1" = "yes" ]]; then
-        docker push "terrabrasilis/deter-pantanal-app:$VERSION"
-    fi
+    docker push "terrabrasilis/deter-pantanal-app:$VERSION"
 fi
