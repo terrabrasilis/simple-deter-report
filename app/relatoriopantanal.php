@@ -126,7 +126,7 @@
 
 	// sql para agrupar por mês
 	$query = 	"SELECT extract(year from view_date) as ano,extract(month from view_date) as mes,";
-	$query .= " class_name as classe, sum(area_km) as area FROM $deter_table WHERE class_name not in ('$classe_dg1')";
+	$query .= " class_name as classe, sum(area_km) as area FROM $deter_table";
 	$query .= " GROUP BY 1,2,3";
 	$result = @pg_query($bdcon, $query);
 	//echo "$query <br>";
