@@ -89,7 +89,7 @@
 	$area_deg = number_format($row["area"], 2, '.', '');
 	$mindate = $row["mindate"];
 	$maxdate = $row["maxdate"];
-	//echo "Alertas de Degradação: $area_deg km² entre $mindate e $maxdate<br><br>";
+	echo "Alertas de Degradação: $area_deg km² entre $mindate e $maxdate<br><br>";
 
 	// sql para desmate CR desde 1 do mês
 	$aux = sscanf ($maxdate, "%4s-%2s-%2s");
@@ -117,7 +117,7 @@
 	$row = @pg_fetch_array($result);
 	$numlinhas = @pg_num_rows($result);
 	$area_deg = number_format($row["area"], 2, '.', '');
-	//echo "Alertas de Degradação: $area_deg km² entre $data1 e $data2<br><br>";
+	echo "Alertas de Degradação: $area_deg km² entre $data1 e $data2<br><br>";
 
 	echo "</p>";
 	echo "</div>";
