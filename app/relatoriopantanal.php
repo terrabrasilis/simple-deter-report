@@ -53,12 +53,12 @@
 	$classe_dg1 = 'cicatriz de queimada';
 
 	// atualiza municipio/uf na tabela deter
-	$query = "UPDATE public.deter_current  as dt";
-	$query .= " SET municipio = mun.nome, uf = mun.uf";
-	$query .= " FROM public.municipalities_pantanal_biome as mun ";
-	$query .= " WHERE ST_INTERSECTS(dt.geom, mun.geom)";
-	$query .= " AND dt.uf is NULL";
-	$result = @pg_query($bdcon, $query);
+	// $query = "UPDATE public.deter_current  as dt";
+	// $query .= " SET municipio = mun.nome, uf = mun.uf";
+	// $query .= " FROM public.municipalities_pantanal_biome as mun ";
+	// $query .= " WHERE ST_INTERSECTS(dt.geom, mun.geom)";
+	// $query .= " AND dt.uf is NULL";
+	// $result = @pg_query($bdcon, $query);
 
 	// sql para desmate CR no periodo
 	$query = "SELECT sum(area_km) as area, ";
