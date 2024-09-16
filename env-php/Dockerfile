@@ -25,7 +25,7 @@ ARG TARGET_IMAGE=""
 
 COPY . /var/www/html/
 
-RUN echo "<?php $target_image=\"${TARGET_IMAGE}\" ?>" >> "/var/www/html/target_image.php" \
+RUN echo "<?php $target_image=\"${TARGET_IMAGE}\"; ?>" >> "/var/www/html/target_image.php"
 
 RUN chown -R www-data:www-data /var/www
 
