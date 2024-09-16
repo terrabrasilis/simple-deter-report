@@ -1,5 +1,13 @@
 #!/bin/bash
 
+TARGET_IMAGE=""
+echo "Enter a target name to build: pantanal OR nf?" ; read TARGET_IMAGE
+if [[ ! "$TARGET_IMAGE" = "pantanal" && ! "$TARGET_IMAGE" = "nf" ]]; then
+    echo "Need a target name for build an image."
+    echo "Use: 'pantanal' or 'nf' "
+    exit
+fi
+
 NO_CACHE=""
 echo "Do you want to build using docker cache from previous build? Type yes to use cache." ; read BUILD_CACHE
 if [[ ! "$BUILD_CACHE" = "yes" ]]; then
@@ -15,11 +23,11 @@ VERSION=$(git describe --tags --abbrev=0)
 
 echo 
 echo "/######################################################################/"
-echo " Build new image terrabrasilis/deter-pantanal-app:$VERSION "
+echo " Build new image terrabrasilis/deter-${TARGET_IMAGE}-app:$VERSION "
 echo "/######################################################################/"
 echo
 
-docker build $NO_CACHE -t "terrabrasilis/deter-pantanal-app:$VERSION" -f env-php/Dockerfile app/
+docker build $NO_CACHE -t "terrabrasilis/deter-${TARGET_IMAGE}-app:$VERSION" --build-arg TARGET_IMAGE=${TARGET_IMAGE} -f env-php/Dockerfile app/
 
 # send to dockerhub
 echo 
@@ -28,5 +36,5 @@ if [[ ! "$SEND_TO_HUB" = "yes" ]]; then
     echo "Ok, not send the images."
 else
     echo "Nice, sending the images!"
-    docker push "terrabrasilis/deter-pantanal-app:$VERSION"
+    docker push "terrabrasilis/deter-${TARGET_IMAGE}-app:$VERSION"
 fi

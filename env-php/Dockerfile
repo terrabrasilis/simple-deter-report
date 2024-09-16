@@ -8,10 +8,10 @@
 FROM php:7-apache
 
 LABEL "br.inpe.dpi"="INPE/DPI-TerraBrasilis" \
-br.inpe.dpi.terrabrasilis="App DETER Pantanal" \
+br.inpe.dpi.terrabrasilis="App DETER" \
 author="Andre Carvalho" \
 author.email="andre.carvalho@inpe.br" \
-description="Simple App report for DETER Pantanal"
+description="Simple App report for DETER"
 #-------------Application Specific Stuff ----------------------------------------------------
 
 RUN apt-get -o Acquire::ForceIPv4=true update \
@@ -21,7 +21,11 @@ RUN apt-get -o Acquire::ForceIPv4=true update \
     && rm -rf /var/lib/apt/lists/*
 
 
+ARG TARGET_IMAGE=""
+
 COPY . /var/www/html/
+
+RUN echo "<?php $target_image=\"${TARGET_IMAGE}\" ?>" >> "/var/www/html/target_image.php" \
 
 RUN chown -R www-data:www-data /var/www
 

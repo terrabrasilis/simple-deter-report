@@ -10,6 +10,18 @@
     error_reporting(E_ALL ^ E_NOTICE);
 	ini_set('display_erros', true);
 	require("config/config.inc.php");
+	require("target_image.php");
+
+	$report_name="";
+	$report_complemento="";
+	if ($target_image=='pantanal') {
+		$report_preposicao="A supressão da vegetação nativa no Pantanal tem apresentado níveis elevados nos últimos anos e, por essa razão, 
+	    houve a necessidade de se criar também um sistema DETER para o monitoramento deste bioma, que teve início em 1º de agosto de 2023.";
+		$report_name="Pantanal";
+	}else{
+		$report_preposicao="O sistema DETER para monitoramento da vegetação nativa, em áreas da Amazônia - Não Floresta, teve início em 1º de agosto de 2023.";
+		$report_name="Amazônia - Não Floresta";
+	}
 
 	$deter_table = "public.deter_auth";
 
@@ -24,7 +36,7 @@
 	}
 
 	$body = "
-	<p align=\"center\"><font size=\"6\" face=\"Verdana\"> <b>Resumo DETER Pantanal</B></font>
+	<p align=\"center\"><font size=\"6\" face=\"Verdana\"> <b>Resumo DETER $report_name</B></font>
 	<br><br>
 	<div class=\"main-txt\">
 	<p align=\"left\"><font>
@@ -34,13 +46,10 @@
 	naquele momento. Diante dos níveis crescentes de supressão da vegetação natural do Cerrado, em 2018 foi criado o 
 	DETER Cerrado. <br><br>
 
-	A supressão da vegetação nativa no Pantanal tem apresentado níveis elevados nos últimos anos e, por essa razão, 
-	houve a necessidade de se criar também um sistema DETER para o monitoramento deste bioma, 
-	que teve início em 1º de agosto de 2023. O DETER Pantanal utiliza imagens dos satélites Amazônia 1, 
-	CBERS 4 e CBERS 4A (sensor Wide Field Imaging Camera - WFI), para detectar avisos de supressão e cicatrizes de queimadas, com 
-	revisita completa no bioma, em média, a cada três dias (e revisitas parciais a cada um ou dois dias).
+	$report_preposicao O DETER $report_name utiliza imagens dos satélites Amazônia 1, 
+	CBERS 4 e CBERS 4A (sensor Wide Field Imaging Camera - WFI), para detectar avisos de supressão e cicatrizes de queimadas.
 	<br><br>
-	<b>Observação: Trata-se de uma versão do DETER em fase de consolidação e são esperadas alterações no dados em relação a versão final a ser disponibilizada no portal Terrabrasilis.</b>
+	<b>Observação: Trata-se de uma versão do DETER em fase de consolidação e são esperadas alterações nos dados em relação a versão final a ser disponibilizada no portal Terrabrasilis.</b>
 	</div>
 	<br><br>
 	<div class=\"res-txt\">
@@ -50,21 +59,14 @@
 
 	$classe_cr1 = 'supressão com vegetação';
 	$classe_cr2 = 'supressão com solo exposto';
+	$classe_cr3 = 'mineração';
 	$classe_dg1 = 'cicatriz de queimada';
-
-	// atualiza municipio/uf na tabela deter
-	// $query = "UPDATE public.deter_current  as dt";
-	// $query .= " SET municipio = mun.nome, uf = mun.uf";
-	// $query .= " FROM public.municipalities_pantanal_biome as mun ";
-	// $query .= " WHERE ST_INTERSECTS(dt.geom, mun.geom)";
-	// $query .= " AND dt.uf is NULL";
-	// $result = @pg_query($bdcon, $query);
 
 	// sql para desmate CR no periodo
 	$query = "SELECT sum(area_km) as area, ";
 	$query .= " min(view_date) as mindate, max(view_date) as maxdate";
 	$query .= " FROM $deter_table";
-	$query .= " WHERE class_name in ('$classe_cr1', '$classe_cr2')";
+	$query .= " WHERE class_name in ('$classe_cr1', '$classe_cr2', '$classe_cr3')";
 
 	//$submitted = 0;
 	$result = @pg_query($bdcon, $query);
@@ -97,7 +99,7 @@
 	$data2 = $maxdate;
 	$query = 	"SELECT sum(area_km) as area FROM $deter_table";
 	$query .= " where view_date >= '$data1' and view_date <= '$data2'";
-	$query .= " and class_name in ('$classe_cr1', '$classe_cr2')";
+	$query .= " and class_name in ('$classe_cr1', '$classe_cr2', '$classe_cr3')";
 	//echo "$query <br>";
 
 	//$submitted = 0;
@@ -161,7 +163,7 @@
 	// sql para desmate CR no periodo por municipo
 	$query = "select municipio as mun, uf as uf, sum(area_km) as area";
 	$query .= " from $deter_table ";
-	$query .= " WHERE class_name in ('$classe_cr1', '$classe_cr2')";
+	$query .= " WHERE class_name in ('$classe_cr1', '$classe_cr2', '$classe_cr3')";
 	$query .= " AND view_date >= '$data1' AND view_date <= '$data2'";
 	$query .= " group by 1,2 order by area desc limit 15";
 	// echo "$query <br>";

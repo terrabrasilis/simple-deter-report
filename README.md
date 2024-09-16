@@ -1,6 +1,6 @@
-# DETER Pantanal App
+# Simple DETER Report
 
-Publish a simple report for DETER Pantanal
+Publish a simple report for DETER
 
 ## Build
 

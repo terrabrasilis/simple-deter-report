@@ -26,7 +26,7 @@ Inject this file via volume inside the container like this Docker compose exampl
 version: '2'
 services:
   deter_pantanal_report:
-    image: terrabrasilis/deter-pantanal-app:vx.y.z
+    image: terrabrasilis/deter-${TARGET_IMAGE}-app:vx.y.z
     ports:
       - "80"
     volumes:
