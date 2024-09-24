@@ -66,7 +66,7 @@
 	$query = "SELECT sum(area_km) as area, ";
 	$query .= " min(view_date) as mindate, max(view_date) as maxdate";
 	$query .= " FROM $deter_table";
-	$query .= " WHERE class_name in ('$classe_cr1', '$classe_cr2', '$classe_cr3')";
+	$query .= " WHERE class_name in ('$classe_cr1', '$classe_cr2', '$classe_cr3') AND area_km >= 0.03";
 
 	//$submitted = 0;
 	$result = @pg_query($bdcon, $query);
@@ -82,7 +82,7 @@
 	$query = "SELECT sum(area_km) as area, ";
 	$query .= " min(view_date) as mindate, max(view_date) as maxdate";
 	$query .= " FROM $deter_table";
-	$query .= " WHERE class_name in ('$classe_dg1')";
+	$query .= " WHERE class_name in ('$classe_dg1') AND area_km >= 0.03";
 
 	//$submitted = 0;
 	$result = @pg_query($bdcon, $query);
@@ -99,7 +99,7 @@
 	$data2 = $maxdate;
 	$query = 	"SELECT sum(area_km) as area FROM $deter_table";
 	$query .= " where view_date >= '$data1' and view_date <= '$data2'";
-	$query .= " and class_name in ('$classe_cr1', '$classe_cr2', '$classe_cr3')";
+	$query .= " and class_name in ('$classe_cr1', '$classe_cr2', '$classe_cr3') AND area_km >= 0.03";
 	//echo "$query <br>";
 
 	//$submitted = 0;
@@ -112,7 +112,7 @@
 	// sql para desmate Degrad desde 1 do mês
 	$query = 	"SELECT sum(area_km) as area FROM $deter_table";
 	$query .= " where view_date >= '$data1' and view_date <= '$data2'";
-	$query .= " and class_name in ('$classe_dg1')";
+	$query .= " and class_name in ('$classe_dg1') AND area_km >= 0.03";
 	//echo "$query <br>";
 
 	$result = @pg_query($bdcon, $query);
@@ -128,7 +128,7 @@
 
 	// sql para agrupar por mês
 	$query = 	"SELECT extract(year from view_date) as ano,extract(month from view_date) as mes,";
-	$query .= " class_name as classe, sum(area_km) as area FROM $deter_table";
+	$query .= " class_name as classe, sum(area_km) as area FROM $deter_table WHERE area_km >= 0.03";
 	$query .= " GROUP BY 1,2,3";
 	$query .= " ORDER BY 1 DESC, 2 DESC";
 	$result = @pg_query($bdcon, $query);
@@ -164,7 +164,7 @@
 	$query = "select municipio as mun, uf as uf, sum(area_km) as area";
 	$query .= " from $deter_table ";
 	$query .= " WHERE class_name in ('$classe_cr1', '$classe_cr2', '$classe_cr3')";
-	$query .= " AND view_date >= '$data1' AND view_date <= '$data2'";
+	$query .= " AND view_date >= '$data1' AND view_date <= '$data2' AND area_km >= 0.03";
 	$query .= " group by 1,2 order by area desc limit 15";
 	// echo "$query <br>";
 
