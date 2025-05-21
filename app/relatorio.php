@@ -73,10 +73,10 @@
 	$numlinhas = @pg_num_rows($result);
 	$row = @pg_fetch_array($result);
 	$area_cr = number_format($row["area"], 2, '.', '');
-	$mindate = $row["mindate"];
-	$maxdate = $row["maxdate"];
+	$mindate_de = $row["mindate"];
+	$maxdate_de = $row["maxdate"];
 
-	echo "<p><b>Alertas de Desmatamento: $area_cr km² entre $mindate e $maxdate<br><br>";
+	echo "<p><b>Alertas de Desmatamento: $area_cr km² entre $mindate_de e $maxdate_de<br><br>";
 		
 	// sql para Degrad no periodo
 	$query = "SELECT sum(area_km) as area, ";
@@ -89,16 +89,16 @@
 	$numlinhas = @pg_num_rows($result);
 	$row = @pg_fetch_array($result);
 	$area_deg = number_format($row["area"], 2, '.', '');
-	$mindate = $row["mindate"];
-	$maxdate = $row["maxdate"];
-	echo "Alertas de Degradação: $area_deg km² entre $mindate e $maxdate<br><br>";
+	$mindate_dg = $row["mindate"];
+	$maxdate_dg = $row["maxdate"];
+	echo "Alertas de Degradação: $area_deg km² entre $mindate_dg e $maxdate_dg<br><br>";
 
 	// sql para desmate CR desde 1 do mês
-	$aux = sscanf ($maxdate, "%4s-%2s-%2s");
-	$data1 = $aux[0]."-".$aux[1]."-01";
-	$data2 = $maxdate;
+	$aux = sscanf ($maxdate_de, "%4s-%2s-%2s");
+	$data1_de = $aux[0]."-".$aux[1]."-01";
+	$data2_de = $maxdate_de;
 	$query = 	"SELECT sum(area_km) as area FROM $deter_table";
-	$query .= " where view_date >= '$data1' and view_date <= '$data2'";
+	$query .= " where view_date >= '$data1_de' and view_date <= '$data2_de'";
 	$query .= " and class_name in ('$classe_cr1', '$classe_cr2', '$classe_cr3') AND area_km >= 0.03";
 	//echo "$query <br>";
 
@@ -107,11 +107,14 @@
 	$numlinhas = @pg_num_rows($result);
 	$row = @pg_fetch_array($result);
 	$area_cr = number_format($row["area"], 2, '.', '');
-	echo "Alertas de Desmatamento: $area_cr km² entre $data1 e $data2<br><br>";
+	echo "Alertas de Desmatamento: $area_cr km² entre $data1_de e $data2_de<br><br>";
 
 	// sql para desmate Degrad desde 1 do mês
+	$aux = sscanf ($maxdate_dg, "%4s-%2s-%2s");
+	$data1_dg = $aux[0]."-".$aux[1]."-01";
+	$data2_dg = $maxdate_dg;
 	$query = 	"SELECT sum(area_km) as area FROM $deter_table";
-	$query .= " where view_date >= '$data1' and view_date <= '$data2'";
+	$query .= " where view_date >= '$data1_dg' and view_date <= '$data2_dg'";
 	$query .= " and class_name in ('$classe_dg1') AND area_km >= 0.03";
 	//echo "$query <br>";
 
@@ -119,7 +122,7 @@
 	$row = @pg_fetch_array($result);
 	$numlinhas = @pg_num_rows($result);
 	$area_deg = number_format($row["area"], 2, '.', '');
-	echo "Alertas de Degradação: $area_deg km² entre $data1 e $data2<br><br>";
+	echo "Alertas de Degradação: $area_deg km² entre $data1_dg e $data2_dg<br><br>";
 
 	echo "</p>";
 	echo "</div>";
@@ -158,13 +161,13 @@
 		
 	echo "<br></table>";
 
-	echo "<p align=\"center\"><b><font>Municípios com maiores áreas detectadas de Desmatamento entre $data1 e $data2</font><br>";
+	echo "<p align=\"center\"><b><font>Municípios com maiores áreas detectadas de Desmatamento entre $data1_de e $data2_de</font><br>";
 
 	// sql para desmate CR no periodo por municipo
 	$query = "select municipio as mun, uf as uf, sum(area_km) as area";
 	$query .= " from $deter_table ";
 	$query .= " WHERE class_name in ('$classe_cr1', '$classe_cr2', '$classe_cr3')";
-	$query .= " AND view_date >= '$data1' AND view_date <= '$data2' AND area_km >= 0.03";
+	$query .= " AND view_date >= '$data1_de' AND view_date <= '$data2_de' AND area_km >= 0.03";
 	$query .= " group by 1,2 order by area desc limit 15";
 	// echo "$query <br>";
 
